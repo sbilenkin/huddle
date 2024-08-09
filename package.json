@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "vite": "^5.4.0"
+  },
+  "scripts": {
+    "frontend:docker-build": "cd huddle-frontend && npm run docker-build",
+    "docker-build": "npm run frontend:docker-build",
+    "docker-start": "docker-compose up -d",
+    "docker-stop": "docker-compose down"
+  }
+}
