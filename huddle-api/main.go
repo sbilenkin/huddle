@@ -14,6 +14,8 @@ import (
 	"github.com/joho/godotenv"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 type UserInfo struct {
@@ -37,6 +39,19 @@ func main() {
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
+
+	// Connect to database (right now this is dev version)
+	dsn := "host=localhost user=postgres password=postgres dbname=huddle sslmode=disable"
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	if err != nil {
+		log.Fatal("Failed to connect to database")
+	}
+	log.Println("Connected to database")
+	err = db.AutoMigrate(&UserInfo{})
+	if err != nil {
+		log.Fatal("Failed to migrate database")
+	}
+	log.Println("Migrated database")
 
 	// Initialize OAuth2 config
 	googleOauthConfig = &oauth2.Config{
